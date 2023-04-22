@@ -1,9 +1,11 @@
-import { exampleRouter } from "./example";
+import { resourceRouter } from "./resource";
+
 import { router } from "../trpc";
-import type { AnyRouter } from "@trpc/server";
+import { recipeRouter } from "./recipe";
 
 const appRouter = router({
-  example: exampleRouter,
+  resource: resourceRouter,
+  recipe: recipeRouter,
 });
 
 export default appRouter;

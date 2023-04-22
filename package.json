@@ -1,0 +1,15 @@
+{
+  "name": "recipe-book-monorepo",
+  "author": "Branislav Hozza",
+  "private": true,
+  "scripts": {
+    "dev": "lerna run dev"
+  },
+  "workspaces": [
+    "./recipe-book",
+    "./recipe-book-api"
+  ],
+  "dependencies": {
+    "lerna": "^6.6.1"
+  }
+}

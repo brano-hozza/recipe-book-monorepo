@@ -1,2 +1,2 @@
-export * from './recipes'
-export * from './resources'
+export * from './recipe'
+export * from './resource'

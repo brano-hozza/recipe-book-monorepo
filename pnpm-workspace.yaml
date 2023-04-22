@@ -1,0 +1,3 @@
+packages:
+  - "./recipe-book"
+  - "./recipe-book-api"
