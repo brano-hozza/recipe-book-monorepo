@@ -8,10 +8,11 @@ defineProps<{
 defineEmits<{
   (event: 'edit'): void
   (event: 'delete'): void
+  (event: 'select'): void
 }>()
 </script>
 <template>
-  <tr class="hover:bg-gray-50">
+  <tr class="hover:bg-gray-50" @click="$emit('select')">
     <td class="font-bold">{{ recipe.name }}</td>
     <td class="hidden md:inline">{{ recipe.description }}</td>
     <td>{{ recipe.ingredients.length }}</td>

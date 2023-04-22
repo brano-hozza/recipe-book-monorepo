@@ -4,6 +4,7 @@ import { useRecipesStore } from '@/stores/recipes'
 import type { NamedIngredient, Recipe } from '@/types'
 import CreateRecipe from '@/components/recipes/CreateRecipe.vue'
 import UpdateRecipe from '@/components/recipes/UpdateRecipe.vue'
+import RecipeDetail from '@/components/recipes/RecipeDetail.vue'
 import RecipeRow from '@/components/recipes/RecipeRow.vue'
 import { useResourcesStore } from '@/stores/resources'
 
@@ -16,6 +17,7 @@ const loading = ref<boolean>(false)
 
 const newRecipeModal = ref<boolean>(false)
 const editRecipeModal = ref<boolean>(false)
+const recipeDetailModal = ref<boolean>(false)
 const selectedRecipe = ref<Recipe | null>(null)
 
 const selectedRecipeIngredients = computed(() => {
@@ -31,6 +33,11 @@ const selectedRecipeIngredients = computed(() => {
   }
   return [] as NamedIngredient[]
 })
+
+const viewRecipe = (recipe: Recipe) => {
+  selectedRecipe.value = recipe
+  recipeDetailModal.value = true
+}
 
 const editRecipe = (recipe: Recipe) => {
   selectedRecipe.value = recipe
@@ -63,6 +70,7 @@ const deleteRecipe = async (recipe: Recipe) => {
         :key="recipe.id"
         :recipe="recipe"
         :loading="loading"
+        @select="viewRecipe(recipe)"
         @edit="editRecipe(recipe)"
         @delete="deleteRecipe(recipe)"
       />
@@ -74,6 +82,13 @@ const deleteRecipe = async (recipe: Recipe) => {
   <!--Edit recipe modal-->
   <update-recipe
     v-model="editRecipeModal"
+    :recipe="selectedRecipe"
+    :ingredients="selectedRecipeIngredients"
+  />
+
+  <!--View recipe detail-->
+  <recipe-detail
+    v-model="recipeDetailModal"
     :recipe="selectedRecipe"
     :ingredients="selectedRecipeIngredients"
   />

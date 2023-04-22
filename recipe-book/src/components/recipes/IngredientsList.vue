@@ -4,7 +4,8 @@ import { computed, onMounted, ref, watch } from 'vue'
 
 const props = defineProps<{
   modelValue: NamedIngredient[]
-  options: Resource[]
+  options?: Resource[]
+  view?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -15,30 +16,31 @@ const selected = ref<string | number>('')
 const amount = ref<number>(0)
 
 onMounted(() => {
+  if (props.view || !props.options) return
   selected.value = props.options[0].id
 })
 
 watch(
   () => props.options,
   (value) => {
-    if (value.length === 0) return
-    selected.value = value[0].id
+    if (value!.length === 0) return
+    selected.value = value![0].id
     amount.value = 0
   }
 )
 
-const selectedUnit = computed(() => {
-  const option = props.options.find((option) => option.id === selected.value)
-  return option?.unit
+const selectedResource = computed(() => {
+  const option = props.options!.find((option) => option.id === selected.value)
+  return option
 })
 
 const canAdd = computed(() => {
-  const option = props.options.find((option) => option.id === selected.value)
+  const option = props.options!.find((option) => option.id === selected.value)
   return option && amount.value > 0
 })
 
 const add = () => {
-  const option = props.options.find((option) => option.id === selected.value)
+  const option = props.options!.find((option) => option.id === selected.value)
   if (option) {
     emit('update:modelValue', [...props.modelValue, { ...option, amount: amount.value }])
   }
@@ -59,7 +61,7 @@ const remove = (index: number) => {
           <th class="text-left pl-2">Ingredient</th>
           <th class="text-left w-8">Amount</th>
           <th class="text-center">Unit</th>
-          <th class="text-right w-8">Remove</th>
+          <th v-if="!view" class="text-right w-8">Remove</th>
         </tr>
       </thead>
       <tbody>
@@ -68,7 +70,7 @@ const remove = (index: number) => {
           <td class="text-left pl-2">{{ item.name }}</td>
           <td class="text-left w-8">{{ item.amount }}</td>
           <td class="text-center">{{ item.unit }}</td>
-          <td class="text-right w-8">
+          <td v-if="!view" class="text-right w-8">
             <button
               class="w-full font-bold text-center bg-gray-100 rounded drop-shadow"
               @click="remove(index)"
@@ -78,7 +80,7 @@ const remove = (index: number) => {
           </td>
         </tr>
 
-        <tr v-if="options.length > 0">
+        <tr v-if="!view || (options ?? []).length > 0">
           <td class="w-8">
             <button
               class="w-full font-bold text-center bg-gray-100 rounded drop-shadow disabled:bg-gray-50 disabled:text-gray-200"
@@ -108,10 +110,12 @@ const remove = (index: number) => {
               v-model="amount"
               class="w-full px-1 bg-slate-100 drop-shadow"
               type="number"
+              min="0"
+              :max="selectedResource?.amount"
               placeholder="Amount"
             />
           </td>
-          <td class="text-center">{{ selectedUnit }}</td>
+          <td class="text-center">{{ selectedResource?.unit }}</td>
         </tr>
       </tbody>
     </table>
