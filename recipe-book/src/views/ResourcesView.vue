@@ -2,8 +2,9 @@
 import { useResourcesStore } from '@/stores/resources'
 import CreateResource from '@/components/resources/CreateResource.vue'
 import UpdateResource from '@/components/resources/UpdateResource.vue'
-import { computed, ref, onMounted } from 'vue'
-import type { Resource, UNIT } from '@/types'
+import ResourceRow from '@/components/resources/ResourceRow.vue'
+import { computed, ref } from 'vue'
+import type { Resource } from '@/types'
 const resourcesStore = useResourcesStore()
 
 const resources = computed(() => resourcesStore.resources)
@@ -11,15 +12,16 @@ const creatingResource = ref<boolean>(false)
 const editingResource = ref<boolean>(false)
 const resource = ref<Resource | null>(null)
 
-onMounted(async () => {
-  await resourcesStore.getResources()
-})
-
 const editResource = (_r: Resource) => {
-  console.log(resource)
   resource.value = _r
   editingResource.value = true
 }
+
+const deleteResource = async (_r: Resource) => {
+  await resourcesStore.deleteResource(_r.id)
+}
+
+const loading = computed(() => editingResource.value || creatingResource.value)
 </script>
 <template>
   <h1 class="text-center w-full text-6xl mb-4">Resources</h1>
@@ -33,15 +35,18 @@ const editResource = (_r: Resource) => {
         <th class="text-left">Amount</th>
         <th class="text-left">Unit</th>
         <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="resource in resources" :key="resource.id" class="hover:bg-gray-50">
-        <td>{{ resource.name }}</td>
-        <td>{{ resource.amount }}</td>
-        <td>{{ resource.unit }}</td>
-        <td><button @click="editResource(resource)">Edit</button></td>
-      </tr>
+      <resource-row
+        v-for="resource in resources"
+        :key="resource.id"
+        :resource="resource"
+        :loading="loading"
+        @edit="editResource(resource)"
+        @delete="deleteResource(resource)"
+      />
     </tbody>
   </table>
   <!--Add new resource modal-->

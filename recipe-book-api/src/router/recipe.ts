@@ -59,6 +59,15 @@ export const recipeRouter = router({
       })
   ),
 
+  delete: publicProcedure.input(z.number()).mutation(
+    async ({ input, ctx }) =>
+      await ctx.prisma.recipe.delete({
+        where: {
+          id: input,
+        },
+      })
+  ),
+
   get: publicProcedure.input(z.number()).query(
     async ({ input, ctx }) =>
       await ctx.prisma.recipe.findUnique({

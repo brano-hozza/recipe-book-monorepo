@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useResourcesStore } from '@/stores/resources'
-import { UNIT, type Resource } from '@/types'
+import type { Resource, Unit } from '@/types'
 import { computed, onMounted, ref, watch } from 'vue'
+import type { UpdateResourceDTO } from '../../../../recipe-book-api/src/router/resource'
 import MyModal from '../utils/MyModal.vue'
 const props = defineProps<{
   modelValue: boolean
@@ -17,7 +18,7 @@ const loading = ref<boolean>(false)
 const resourceName = ref<string>('')
 const resourceDescription = ref<string>('')
 const resourceAmount = ref<number>(0)
-const resourceUnit = ref<UNIT>(UNIT.PCS)
+const resourceUnit = ref<Unit>('PCS')
 
 const canCreate = computed(
   () => !loading.value && resourceName.value.length > 4 && resourceAmount.value > 0
@@ -30,7 +31,7 @@ watch(
     resourceName.value = value?.name ?? 'Loading...'
     resourceDescription.value = value?.description ?? ''
     resourceAmount.value = value?.amount ?? 0
-    resourceUnit.value = value?.unit ?? UNIT.PCS
+    resourceUnit.value = value?.unit ?? 'PCS'
   }
 )
 
@@ -38,19 +39,18 @@ onMounted(() => {
   resourceName.value = props.resource?.name ?? 'Loading...'
   resourceDescription.value = props.resource?.description ?? ''
   resourceAmount.value = props.resource?.amount ?? 0
-  resourceUnit.value = props.resource?.unit ?? UNIT.PCS
+  resourceUnit.value = props.resource?.unit ?? 'PCS'
 })
 
 const updateResource = async () => {
   loading.value = true
-  const newResource = {
+  const newResource: UpdateResourceDTO = {
     id: props.resource!.id,
     name: resourceName.value,
     description: resourceDescription.value,
     amount: resourceAmount.value,
     unit: resourceUnit.value
   }
-  console.log(newResource)
   await resourcesStore.updateResource(newResource)
   emit('update:modelValue', false)
   loading.value = false
@@ -58,10 +58,10 @@ const updateResource = async () => {
 </script>
 <template>
   <my-modal
-    @update:modelValue="(val: boolean) => $emit('update:modelValue', val)"
     :modelValue="modelValue"
+    @update:modelValue="(val: boolean) => $emit('update:modelValue', val)"
   >
-    <template #title> Create new resource </template>
+    <template #title> Update resource </template>
     <template #body>
       <label class="flex flex-col gap-1">
         <span>Name</span>

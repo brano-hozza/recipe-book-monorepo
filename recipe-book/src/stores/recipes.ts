@@ -35,5 +35,12 @@ export const useRecipesStore = defineStore('recipes', () => {
       ingredients: recipeData.ingredients.map((i) => ({ id: i.resourceId, amount: i.amount }))
     }
   }
-  return { recipes, addRecipe, updateRecipe, getRecipes }
+
+  const deleteRecipe = async (id: number) => {
+    await trpc.recipe.delete.mutate(id)
+    const index = recipes.value.findIndex((r) => r.id === id)
+    recipes.value.splice(index, 1)
+  }
+
+  return { recipes, addRecipe, updateRecipe, getRecipes, deleteRecipe }
 })

@@ -11,11 +11,11 @@ defineEmits<{
 <template>
   <div
     v-if="modelValue"
-    class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center"
+    class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-20"
   >
-    <div class="bg-white rounded-lg p-8 w-1/2">
+    <div class="bg-white rounded-lg p-8 w-full md:w-1/2">
       <h2 class="text-center text-2xl mb-4"><slot name="title" /></h2>
-      <form class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4">
         <slot name="body" />
         <div class="flex justify-end">
           <slot name="actions">
@@ -28,7 +28,7 @@ defineEmits<{
             </button>
           </slot>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>

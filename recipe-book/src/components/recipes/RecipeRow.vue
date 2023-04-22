@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Resource } from '@/types'
+import type { Recipe } from '@/types'
 
 defineProps<{
-  resource: Resource
+  recipe: Recipe
   loading: boolean
 }>()
 defineEmits<{
@@ -12,13 +12,14 @@ defineEmits<{
 </script>
 <template>
   <tr class="hover:bg-gray-50">
-    <td>{{ resource.name }}</td>
-    <td>{{ resource.amount }}</td>
-    <td>{{ resource.unit }}</td>
+    <td class="font-bold">{{ recipe.name }}</td>
+    <td class="hidden md:inline">{{ recipe.description }}</td>
+    <td>{{ recipe.ingredients.length }}</td>
+    <td class="hidden md:inline">{{ recipe.instructions.length }}</td>
     <td>
       <button
         :disabled="loading"
-        class="disabled:bg-slate-200 disabled:cursor-not-allowed"
+        class="disabled:bg-slate-200 disabled:cursor-not-allowed text-blue-400"
         @click="$emit('edit')"
       >
         Edit
@@ -27,7 +28,7 @@ defineEmits<{
     <td>
       <button
         :disabled="loading"
-        class="disabled:bg-slate-200 disabled:cursor-not-allowed"
+        class="disabled:bg-slate-200 disabled:cursor-not-allowed text-red-500"
         @click="$emit('delete')"
       >
         Delete

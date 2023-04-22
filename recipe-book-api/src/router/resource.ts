@@ -27,7 +27,7 @@ export const resourceRouter = router({
           unit: input.unit,
           amount: input.amount,
         },
-      })) as Resource & { unit: UNIT }
+      })) as Resource
   ),
 
   update: publicProcedure.input(resourceSchema).mutation(
@@ -43,7 +43,16 @@ export const resourceRouter = router({
           unit: input.unit,
           amount: input.amount,
         },
-      })) as Resource & { unit: UNIT }
+      })) as Resource
+  ),
+
+  delete: publicProcedure.input(z.number()).mutation(
+    async ({ input, ctx }) =>
+      (await ctx.prisma.resource.delete({
+        where: {
+          id: input,
+        },
+      })) as Resource
   ),
 
   get: publicProcedure.input(z.number()).query(
@@ -52,7 +61,7 @@ export const resourceRouter = router({
         where: {
           id: input,
         },
-      })) as Resource & { unit: UNIT }
+      })) as Resource
   ),
 
   getAll: publicProcedure.query(

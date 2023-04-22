@@ -1,13 +1,9 @@
-export enum UNIT {
-  G = 'G',
-  ML = 'ML',
-  PCS = 'PCS'
-}
+export type Unit = 'G' | 'ML' | 'PCS'
 export interface Resource {
   id: number
   name: string
   description: string | null
   img: string | null
-  unit: UNIT
+  unit: Unit
   amount: number
 }

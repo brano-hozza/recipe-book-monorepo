@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useResourcesStore } from '@/stores/resources'
-import { UNIT } from '@/types'
+import type { Unit } from '@/types'
 import { computed, ref } from 'vue'
+import type { CreateResourceDTO } from '../../../../recipe-book-api/src/router/resource'
 import MyModal from '../utils/MyModal.vue'
 
 defineProps<{
@@ -18,7 +19,7 @@ const loading = ref<boolean>(false)
 const resourceName = ref<string>('')
 const resourceDescription = ref<string>('')
 const resourceAmount = ref<number>(0)
-const resourceUnit = ref<UNIT>(UNIT.PCS)
+const resourceUnit = ref<Unit>('PCS')
 
 const canCreate = computed(
   () => !loading.value && resourceName.value.length > 4 && resourceAmount.value > 0
@@ -26,13 +27,12 @@ const canCreate = computed(
 
 const createResource = async () => {
   loading.value = true
-  const newResource = {
+  const newResource: CreateResourceDTO = {
     name: resourceName.value,
     description: resourceDescription.value,
     amount: resourceAmount.value,
     unit: resourceUnit.value
   }
-  console.log(newResource)
   await resourcesStore.addResource(newResource)
   emit('update:modelValue', false)
   loading.value = false
@@ -40,8 +40,8 @@ const createResource = async () => {
 </script>
 <template>
   <my-modal
-    @update:modelValue="(val: boolean) => $emit('update:modelValue', val)"
     :modelValue="modelValue"
+    @update:modelValue="(val: boolean) => $emit('update:modelValue', val)"
   >
     <template #title> Create new resource </template>
     <template #body>
