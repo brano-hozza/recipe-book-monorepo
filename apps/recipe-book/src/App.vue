@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { RouterView, useRouter } from 'vue-router'
 import { ROUTES } from '@/router'
-import { useResourcesStore } from './stores/resources'
-import { useRecipesStore } from './stores/recipes'
+import { useResourcesStore } from '@/stores/resources'
+import { useRecipesStore } from '@/stores/recipes'
 import { onMounted } from 'vue'
 const router = useRouter()
 const resourcesStore = useResourcesStore()

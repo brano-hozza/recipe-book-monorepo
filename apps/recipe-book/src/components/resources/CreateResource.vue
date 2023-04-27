@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useResourcesStore } from '@/stores/resources'
-import type { Unit } from '@/types'
+import type { Unit, CreateResourceDTO } from '@/types'
 import { computed, ref } from 'vue'
-import type { CreateResourceDTO } from '../../../../recipe-book-api/src/router/resource'
 import MyModal from '../utils/MyModal.vue'
 
 defineProps<{

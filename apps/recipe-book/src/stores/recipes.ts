@@ -1,12 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useTrpc } from '@/composables/trpc'
-import type { Recipe } from '@/types'
-import type {
-  CreateRecipeDTO,
-  RecipeDTO,
-  UpdateRecipeDTO
-} from '../../../recipe-book-api/src/router/recipe'
+import type { Recipe, CreateRecipeDTO, RecipeDTO, UpdateRecipeDTO } from '@/types'
 
 export const useRecipesStore = defineStore('recipes', () => {
   const recipes = ref<Recipe[]>([])

@@ -1,12 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useTrpc } from '@/composables/trpc'
-import type { Resource } from '@/types/resource'
-import type {
-  CreateResourceDTO,
-  ResourceDTO,
-  UpdateResourceDTO
-} from '../../../recipe-book-api/src/router/resource'
+import type { Resource, CreateResourceDTO, ResourceDTO, UpdateResourceDTO } from '@/types'
 
 export const useResourcesStore = defineStore('resources', () => {
   const resources = ref<Resource[]>([])

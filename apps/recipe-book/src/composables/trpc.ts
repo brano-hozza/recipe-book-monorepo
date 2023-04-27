@@ -1,5 +1,5 @@
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client'
-import type { AppRouter } from '../../../recipe-book-api/src/router'
+import type { AppRouter } from '@/types'
 
 export function useTrpc() {
   const trpc = createTRPCProxyClient<AppRouter>({

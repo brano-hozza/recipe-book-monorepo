@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useResourcesStore } from '@/stores/resources'
-import type { Resource, Unit } from '@/types'
+import type { Resource, Unit, UpdateResourceDTO } from '@/types'
 import { computed, onMounted, ref, watch } from 'vue'
-import type { UpdateResourceDTO } from '../../../../recipe-book-api/src/router/resource'
 import MyModal from '../utils/MyModal.vue'
 const props = defineProps<{
   modelValue: boolean

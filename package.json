@@ -3,16 +3,14 @@
   "author": "Branislav Hozza",
   "private": true,
   "scripts": {
-    "dev": "lerna run dev"
+    "dev": "lerna run dev",
+    "build": "lerna run build"
   },
   "workspaces": [
-    "./recipe-book",
-    "./recipe-book-api"
+    "apps/*"
   ],
   "dependencies": {
     "lerna": "^6.6.1"
   },
-  "devDependencies": {
-    "typescript": "~4.8.4"
-  }
+  "devDependencies": {}
 }

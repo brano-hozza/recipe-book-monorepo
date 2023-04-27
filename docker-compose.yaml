@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin-password
+    ports:
+      - "5432:5432"
+    volumes:
+      - recipe-book-db:/var/lib/postgresql/data
+
+  recipe-book-api:
+    build:
+      context: ./apps/recipe-book-api
+    environment:
+      URL: 3000
+      DATABASE_UR: "postgresql://admin:admin-password@localhost:5432/recipe_book?schema=public"
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+
+  recipe-book:
+    build:
+      context: ./apps/recipe-book
+    environment:
+      VITE_TRPC_URL: http://localhost:3000/trpc
+    depends_on:
+      - recipe-book-api
+    ports:
+      - "8080:8080"
+
+volumes:
+  recipe-book-db:
